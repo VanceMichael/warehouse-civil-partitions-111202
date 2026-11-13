@@ -1,3 +1,10 @@
 {
-  "events": "event TEXT PRIMARY KEY, store TEXT NOT NULL, instant TEXT NOT NULL, value TEXT NOT NULL"
+  "events": "event TEXT PRIMARY KEY, store TEXT NOT NULL, instant TEXT NOT NULL, value TEXT NOT NULL",
+  "store_configs": "config_id TEXT NOT NULL, store TEXT NOT NULL, timezone TEXT NOT NULL, close_hour INTEGER NOT NULL, effective_local_date TEXT NOT NULL, effective_utc TEXT NOT NULL, created_utc TEXT NOT NULL, PRIMARY KEY (store, config_id)",
+  "event_placements": "event TEXT NOT NULL, store TEXT NOT NULL, instant_utc TEXT NOT NULL, layout TEXT NOT NULL, partition_path TEXT NOT NULL, object_rel TEXT NOT NULL, config_id TEXT, biz_day TEXT, batch TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 1, PRIMARY KEY (event, layout)",
+  "partition_objects": "partition_path TEXT NOT NULL, object_rel TEXT NOT NULL, layout TEXT NOT NULL, store TEXT NOT NULL, day TEXT NOT NULL, config_id TEXT, row_count INTEGER NOT NULL, digest TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 1, batch TEXT, PRIMARY KEY (partition_path, object_rel)",
+  "quarantine_records": "event TEXT PRIMARY KEY, store TEXT NOT NULL, raw_instant TEXT NOT NULL, reason_code TEXT NOT NULL, reason TEXT NOT NULL, object_rel TEXT NOT NULL, batch TEXT NOT NULL",
+  "migration_state": "partition_path TEXT PRIMARY KEY, layout_from TEXT NOT NULL, layout_to TEXT NOT NULL, state TEXT NOT NULL, target_partition TEXT, digest TEXT, rows_copied INTEGER, updated_utc TEXT NOT NULL, detail TEXT",
+  "layout_registry": "name TEXT PRIMARY KEY, value TEXT NOT NULL, updated_utc TEXT NOT NULL",
+  "reconciliation_runs": "run_id TEXT PRIMARY KEY, started_utc TEXT NOT NULL, finished_utc TEXT, summary TEXT NOT NULL"
 }
